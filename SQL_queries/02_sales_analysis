@@ -1,0 +1,31 @@
+Total Sales by Product
+
+SELECT p.product_name, SUM(t.quantity) AS total_quantity_sold, SUM(p.price * t.quantity) AS total_sales
+FROM Transactions t
+JOIN Products p ON t.product_id = p.product_id
+GROUP BY p.product_name
+ORDER BY total_sales DESC;
+
+Total Sales by Store
+SELECT s.store_name, SUM(p.price * t.quantity) AS total_sales
+FROM Transactions t
+JOIN Stores s ON t.store_id = s.store_id
+JOIN Products p ON t.product_id = p.product_id
+GROUP BY s.store_name
+ORDER BY total_sales DESC;
+
+Top 3 Customers by Spending
+SELECT TOP 3 c.first_name, c.last_name, SUM(p.price * t.quantity) AS total_spent
+FROM Transactions t
+JOIN Customers c ON t.customer_id = c.customer_id
+JOIN Products p ON t.product_id = p.product_id
+GROUP BY c.first_name, c.last_name
+ORDER BY total_spent DESC;
+
+Monthly Sales Trend
+SELECT FORMAT(transaction_date, 'yyyy-MM') AS month, SUM(p.price * t.quantity) AS total_sales
+FROM Transactions t
+JOIN Products p ON t.product_id = p.product_id
+GROUP BY FORMAT(transaction_date, 'yyyy-MM')
+ORDER BY month;
+
